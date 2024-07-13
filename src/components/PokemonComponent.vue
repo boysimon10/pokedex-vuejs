@@ -1,38 +1,101 @@
 <template>
-    <div class="flex justify-center space-x-4 p-40">
-      <div class="bg-gradient-to-r from-yellow-500 to-amber-300 shadow-custom-yellow rounded-3xl p-4 w-72 h-52 relative">
-        <img src="https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/25/shiny.png" alt="Dexter" class="h-72 mx-auto absolute -top-32 left-1/2 transform -translate-x-1/2">
-        <div class="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end">
-          <h2 class="text-white text-3xl font-bold">Pikachu</h2>
-          <p class="text-white">Pikachu Description</p>
-        </div>
-      </div>
-      <div class="bg-gradient-to-r from-yellow-500 to-amber-300 shadow-custom-yellow rounded-3xl p-4 w-72 h-52 relative">
-        <img src="https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/25/shiny.png" alt="Dexter" class="h-72 mx-auto absolute -top-32 left-1/2 transform -translate-x-1/2">
-        <div class="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end">
-          <h2 class="text-white text-3xl font-bold">Pikachu</h2>
-          <p class="text-white">Pikachu Description</p>
-        </div>
-      </div>
-      <div class="bg-gradient-to-r from-yellow-500 to-amber-300 shadow-custom-yellow rounded-3xl p-4 w-72 h-52 relative">
-        <img src="https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/25/shiny.png" alt="Dexter" class="h-72 mx-auto absolute -top-32 left-1/2 transform -translate-x-1/2">
-        <div class="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end">
-          <h2 class="text-white text-3xl font-bold">Pikachu</h2>
-          <p class="text-white">Pikachu Description</p>
-        </div>
-      </div>
-      <div class="bg-gradient-to-r from-yellow-500 to-amber-300 shadow-custom-yellow rounded-3xl p-4 w-72 h-52 relative">
-        <img src="https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/25/shiny.png" alt="Dexter" class="h-72 mx-auto absolute -top-32 left-1/2 transform -translate-x-1/2">
-        <div class="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end">
-          <h2 class="text-white text-3xl font-bold">Pikachu</h2>
-          <p class="text-white">Pikachu Description</p>
+  <div class="flex justify-center items-center py-52 overflow-hidden relative">
+    <button @click="prevSlide" class="absolute left-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg z-10">‹</button>
+    <div class="flex space-x-4 transition-transform duration-300" :style="{ transform: `translateX(calc(50% - ${currentIndex * (100 / cards.length)}% - ${(currentIndex * 72)}px))` }">
+      <div
+        v-for="(card, index) in cards"
+        :key="index"
+        class="relative transition-transform duration-300"
+        :class="getCardClass(index)"
+      >
+        <div class="bg-gradient-to-r from-yellow-500 to-amber-300 shadow-custom-yellow rounded-3xl p-4 w-72 h-52 relative">
+          <img :src="card.image" alt="Dexter" class="h-72 mx-auto absolute -top-36 left-1/2 transform -translate-x-1/2">
+          <div class="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end">
+            <h2 class="text-white text-3xl font-bold">{{ card.name }}</h2>
+            <p class="text-white">{{ card.description }}</p>
+          </div>
         </div>
       </div>
     </div>
-  </template>
+    <button @click="nextSlide" class="absolute right-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg z-10">›</button>
+  </div>
+</template>
 
-<script> 
-    export default{
-        name: 'PokemonComponent'
-    }
+
+<script>
+export default {
+  data() {
+    return {
+      currentIndex: 0,
+      cards: [
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/25/shiny.png',
+          name: 'Pikachu',
+          description: 'Pikachu Description',
+        },
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/197/regular.png',
+          name: 'Noctali',
+          description: 'Noctali Description',
+        },
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/212/regular.png',
+          name: 'Cizayox',
+          description: 'Cizayox Description',
+        },
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/218/regular.png',
+          name: 'Limagma',
+          description: 'Limagma Description',
+        },
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/228/regular.png',
+          name: 'Malosse',
+          description: 'Malosse Description',
+        },
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/262/regular.png',
+          name: 'Grahyèna',
+          description: 'Grahyèna Description',
+        },
+      ],
+    };
+  },
+  methods: {
+    prevSlide() {
+      this.currentIndex = (this.currentIndex > 0) ? this.currentIndex - 1 : this.cards.length - 1;
+    },
+    nextSlide() {
+      this.currentIndex = (this.currentIndex < this.cards.length - 1) ? this.currentIndex + 1 : 0;
+    },
+    getCardClass(index) {
+      if (index === this.currentIndex) return 'scale-100 z-20';
+      if (index === this.currentIndex - 1 || (this.currentIndex === 0 && index === this.cards.length - 1)) return 'scale-75 z-10';
+      if (index === this.currentIndex + 1 || (this.currentIndex === this.cards.length - 1 && index === 0)) return 'scale-75 z-10';
+      return 'scale-50 z-0';
+    },
+  },
+};
 </script>
+
+<style scoped>
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #FBBF24, #FDBA74);
+}
+
+.shadow-custom-yellow {
+  box-shadow: 0 4px 6px rgba(251, 191, 36, 0.1), 0 2px 4px rgba(251, 191, 36, 0.06);
+}
+
+.scale-100 {
+  transform: scale(1);
+}
+
+.scale-75 {
+  transform: scale(0.75);
+}
+
+.scale-50 {
+  transform: scale(0.5);
+}
+</style>

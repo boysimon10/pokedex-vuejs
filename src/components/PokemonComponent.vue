@@ -5,8 +5,9 @@
       <div
         v-for="(card, index) in cards"
         :key="index"
-        class="relative transition-transform duration-300"
+        class="relative cursor-pointer transition-transform duration-500 ease-in-out transform"
         :class="getCardClass(index)"
+        @click="setActiveCard(index)"
       >
         <div class="bg-gradient-to-r from-yellow-500 to-amber-300 shadow-custom-yellow rounded-3xl p-4 w-72 h-52 relative">
           <img :src="card.image" alt="Dexter" class="h-72 mx-auto absolute -top-36 left-1/2 transform -translate-x-1/2">
@@ -20,7 +21,6 @@
     <button @click="nextSlide" class="absolute right-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg z-10">›</button>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -68,8 +68,11 @@ export default {
     nextSlide() {
       this.currentIndex = (this.currentIndex < this.cards.length - 1) ? this.currentIndex + 1 : 0;
     },
+    setActiveCard(index) {
+      this.currentIndex = index;
+    },
     getCardClass(index) {
-      if (index === this.currentIndex) return 'scale-100 z-20';
+      if (index === this.currentIndex) return 'active-card scale-110 z-20';
       if (index === this.currentIndex - 1 || (this.currentIndex === 0 && index === this.cards.length - 1)) return 'scale-75 z-10';
       if (index === this.currentIndex + 1 || (this.currentIndex === this.cards.length - 1 && index === 0)) return 'scale-75 z-10';
       return 'scale-50 z-0';
@@ -87,8 +90,8 @@ export default {
   box-shadow: 0 4px 6px rgba(251, 191, 36, 0.1), 0 2px 4px rgba(251, 191, 36, 0.06);
 }
 
-.scale-100 {
-  transform: scale(1);
+.scale-110 {
+  transform: scale(1.1);
 }
 
 .scale-75 {
@@ -97,5 +100,9 @@ export default {
 
 .scale-50 {
   transform: scale(0.5);
+}
+
+.active-card {
+  transition: transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="flex justify-center items-center py-52 overflow-hidden relative">
     <button @click="prevSlide" class="absolute left-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg z-10">‹</button>
-    <div class="flex space-x-4 transition-transform duration-300" :style="{ transform: `translateX(calc(50% - ${currentIndex * (100 / cards.length)}% - ${(currentIndex * 72)}px))` }">
+    <div class="flex space-x-4 transition-transform duration-300" :style="{ transform: `translateX(calc(50% - ${currentIndex * (100 / filteredCards.length)}% - ${(currentIndex * 72)}px))` }">
       <div
-        v-for="(card, index) in cards"
+        v-for="(card, index) in filteredCards"
         :key="index"
         class="relative cursor-pointer transition-transform duration-500 ease-in-out transform"
         :class="getCardClass(index)"
@@ -24,6 +24,12 @@
 
 <script>
 export default {
+  props: {
+    searchTerm: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       currentIndex: 0,
@@ -58,26 +64,44 @@ export default {
           name: 'Grahyèna',
           description: 'Grahyèna Description',
         },
+        {
+          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/444/shiny.png',
+          name: 'Carmache',
+          description: 'Carmache Description',
+        },
       ],
     };
   },
+  computed: {
+    filteredCards() {
+      if (this.searchTerm) {
+        return this.cards.filter(card => card.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+      }
+      return this.cards;
+    }
+  },
   methods: {
     prevSlide() {
-      this.currentIndex = (this.currentIndex > 0) ? this.currentIndex - 1 : this.cards.length - 1;
+      this.currentIndex = (this.currentIndex > 0) ? this.currentIndex - 1 : this.filteredCards.length - 1;
     },
     nextSlide() {
-      this.currentIndex = (this.currentIndex < this.cards.length - 1) ? this.currentIndex + 1 : 0;
+      this.currentIndex = (this.currentIndex < this.filteredCards.length - 1) ? this.currentIndex + 1 : 0;
     },
     setActiveCard(index) {
       this.currentIndex = index;
     },
     getCardClass(index) {
       if (index === this.currentIndex) return 'active-card scale-110 z-20';
-      if (index === this.currentIndex - 1 || (this.currentIndex === 0 && index === this.cards.length - 1)) return 'scale-75 z-10';
-      if (index === this.currentIndex + 1 || (this.currentIndex === this.cards.length - 1 && index === 0)) return 'scale-75 z-10';
+      if (index === this.currentIndex - 1 || (this.currentIndex === 0 && index === this.filteredCards.length - 1)) return 'scale-75 z-10';
+      if (index === this.currentIndex + 1 || (this.currentIndex === this.filteredCards.length - 1 && index === 0)) return 'scale-75 z-10';
       return 'scale-50 z-0';
-    },
+    }
   },
+  watch: {
+    searchTerm() {
+      this.currentIndex = 0;
+    }
+  }
 };
 </script>
 

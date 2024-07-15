@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-      <NavbarComponent/>
-      <PokemonComponent />
+    <NavbarComponent @search="onSearch" />
+    <PokemonComponent :search-term="searchTerm" />
   </div>
 </template>
 
@@ -12,9 +12,19 @@ import PokemonComponent from '@/components/PokemonComponent.vue';
 
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      searchTerm: ''
+    };
+  },
   components: {
     NavbarComponent,
     PokemonComponent
+  },
+  methods: {
+    onSearch(searchTerm) {
+      this.searchTerm = searchTerm;
+    }
   }
 }
 </script>

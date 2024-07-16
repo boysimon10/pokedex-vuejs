@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center py-52 overflow-hidden relative">
     <button @click="prevSlide" class="absolute left-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg z-10">‹</button>
-    <div class="flex space-x-4 transition-transform duration-300" :style="{ transform: `translateX(calc(50% - ${currentIndex * (100 / filteredCards.length)}% - ${(currentIndex * 72)}px))` }">
+    <div class="flex space-x-4 transition-transform duration-300" :style="{ transform: `translateX(calc(50% - ${currentIndex * (100 / filteredCards.length)}%))` }">
       <div
         v-for="(card, index) in filteredCards"
         :key="index"
@@ -22,7 +22,10 @@
   </div>
 </template>
 
+
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     searchTerm: {
@@ -32,55 +35,37 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0,
-      cards: [
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/25/shiny.png',
-          name: 'Pikachu',
-          description: 'Pikachu Description',
-        },
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/197/regular.png',
-          name: 'Noctali',
-          description: 'Noctali Description',
-        },
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/212/regular.png',
-          name: 'Cizayox',
-          description: 'Cizayox Description',
-        },
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/218/regular.png',
-          name: 'Limagma',
-          description: 'Limagma Description',
-        },
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/228/regular.png',
-          name: 'Malosse',
-          description: 'Malosse Description',
-        },
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/262/regular.png',
-          name: 'Grahyèna',
-          description: 'Grahyèna Description',
-        },
-        {
-          image: 'https://raw.githubusercontent.com/Yarkis01/TyraDex/images/sprites/444/shiny.png',
-          name: 'Carmache',
-          description: 'Carmache Description',
-        },
-      ],
+      currentIndex: 3,
+      allCards: [],
+      randomCards: [],
     };
   },
   computed: {
     filteredCards() {
       if (this.searchTerm) {
-        return this.cards.filter(card => card.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+        return this.allCards.filter(card => card.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
       }
-      return this.cards;
+      return this.randomCards;
     }
   },
   methods: {
+    async fetchPokemonData() {
+      try {
+        const response = await axios.get('https://tyradex.vercel.app/api/v1/pokemon');
+        this.allCards = response.data.map(pokemon => ({
+          name: pokemon.name.fr,
+          image: pokemon.sprites.regular,
+          description: pokemon.description || 'No description available'
+        }));
+        this.randomCards = this.getRandomCards();
+      } catch (error) {
+        console.error('Error fetching Pokémon data:', error);
+      }
+    },
+    getRandomCards() {
+      const shuffled = [...this.allCards].sort(() => 0.5 - Math.random());
+      return shuffled
+    },
     prevSlide() {
       this.currentIndex = (this.currentIndex > 0) ? this.currentIndex - 1 : this.filteredCards.length - 1;
     },
@@ -101,6 +86,9 @@ export default {
     searchTerm() {
       this.currentIndex = 0;
     }
+  },
+  mounted() {
+    this.fetchPokemonData();
   }
 };
 </script>

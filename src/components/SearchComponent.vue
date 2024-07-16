@@ -3,7 +3,7 @@
       <input
         type="text"
         placeholder="Search Pokemon..."
-        class="bg-[#f6f5fa] rounded-full px-6 py-2 pl-10"
+        class="bg-[#f6f5fa] rounded-full px-6 py-2 pl-10 focus:outline-none"
         @input="onInput"
       />
       <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

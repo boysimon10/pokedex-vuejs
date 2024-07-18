@@ -1,14 +1,13 @@
 <template>
   <div class="home">
     <NavbarComponent @search="onSearch" />
-    <PokemonComponent :search-term="searchTerm" />
+    <PokemonListComponent :searchTerm="searchTerm" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import NavbarComponent from '@/components/NavbarComponent.vue';
-import PokemonComponent from '@/components/PokemonComponent.vue';
+import PokemonListComponent from '@/components/PokemonListComponent.vue';
 
 export default {
   name: 'HomeView',
@@ -19,7 +18,7 @@ export default {
   },
   components: {
     NavbarComponent,
-    PokemonComponent
+    PokemonListComponent,
   },
   methods: {
     onSearch(searchTerm) {

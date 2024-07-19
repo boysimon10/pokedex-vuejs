@@ -9,6 +9,7 @@
         :index="index"
         :currentIndex="currentIndex"
         @setActiveCard="setActiveCard"
+        @navigate="goToPokemonDetail"
         :class="{ 'scale-110': currentIndex === index, 'scale-75': currentIndex !== index }"
       />
     </div>
@@ -57,7 +58,7 @@ export default {
         this.allCards = response.data.map(pokemon => ({
           name: pokemon.name.fr,
           image: pokemon.sprites.regular,
-          description: pokemon.description || 'No description available'
+          description: pokemon.category || 'No description available'
         }));
         this.randomCards = this.getRandomCards();
       } catch (error) {
@@ -76,6 +77,9 @@ export default {
     },
     setActiveCard(index) {
       this.currentIndex = index;
+    },
+    goToPokemonDetail(name) {
+      this.$router.push({ name: 'PokemonDetail', params: { name } });
     }
   },
   watch: {

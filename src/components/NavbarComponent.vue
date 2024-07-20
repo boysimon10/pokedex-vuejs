@@ -2,10 +2,11 @@
     <div class="bg-white">
       <header class="mx-auto lg:w-1/2 md:max-w-full">
         <div class="flex items-center justify-between px-5 py-8">
+          <router-link to="/">
           <div class="flex items-center">
             <img :src="logo" alt="Logo" class="h-10 mr-3" />
             <span class="text-xl font-bold hidden md:inline">Pokedex</span>
-          </div>
+          </div></router-link>
           <SearchComponent @search="onSearch" />
           <div class="flex items-center cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ml-3">

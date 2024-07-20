@@ -58,6 +58,7 @@ export default {
         this.allCards = response.data.map(pokemon => ({
           name: pokemon.name.fr,
           image: pokemon.sprites.regular,
+          pokedex_id: pokemon.pokedex_id,
           description: pokemon.category || 'No description available'
         }));
         this.randomCards = this.getRandomCards();
@@ -78,8 +79,8 @@ export default {
     setActiveCard(index) {
       this.currentIndex = index;
     },
-    goToPokemonDetail(name) {
-      this.$router.push({ name: 'PokemonDetail', params: { name } });
+    goToPokemonDetail(pokedex_id) {
+      this.$router.push({ name: 'PokemonDetail', params: { pokedex_id } });
     }
   },
   watch: {

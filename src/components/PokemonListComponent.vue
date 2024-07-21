@@ -52,24 +52,25 @@ export default {
     }
   },
   methods: {
-    async fetchPokemonData() {
-      try {
-        const response = await axios.get('https://tyradex.vercel.app/api/v1/pokemon');
-        this.allCards = response.data.map(pokemon => ({
-          name: pokemon.name.fr,
-          image: pokemon.sprites.regular,
-          pokedex_id: pokemon.pokedex_id,
-          description: pokemon.category || 'No description available'
-        }));
-        this.randomCards = this.getRandomCards();
-      } catch (error) {
-        console.error('Error fetching Pokémon data:', error);
-      }
-    },
-    getRandomCards() {
-      const shuffled = [...this.allCards].sort(() => 0.5 - Math.random());
-      return shuffled;
-    },
+  async fetchPokemonData() {
+    try {
+      const response = await axios.get('https://tyradex.vercel.app/api/v1/pokemon');
+      const filteredPokemon = response.data.filter(pokemon => pokemon.pokedex_id !== 0);
+      this.allCards = filteredPokemon.map(pokemon => ({
+        name: pokemon.name.fr,
+        image: pokemon.sprites.regular,
+        pokedex_id: pokemon.pokedex_id,
+        description: pokemon.category || 'No description available'
+      }));
+      this.randomCards = this.getRandomCards();
+    } catch (error) {
+      console.error('Error fetching Pokémon data:', error);
+    }
+  },
+  getRandomCards() {
+    const shuffled = [...this.allCards].sort(() => 0.5 - Math.random());
+    return shuffled;
+  },
     prevSlide() {
       this.currentIndex = (this.currentIndex > 0) ? this.currentIndex - 1 : this.filteredCards.length - 1;
     },

@@ -4,6 +4,7 @@
 
 <h3 align="left">API</h3>
 [https://tyradex.vercel.app/](https://tyradex.vercel.app/)
-
-
+.
+.
+.
 ![alt text](https://github.com/boysimon10/pokedex-vuejs/blob/main/public/pokedex-screenshot.png)
